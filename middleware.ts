@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-
-const SESSION_COOKIE = 'better-auth.session_token'
+import { getSessionCookie } from 'better-auth/cookies'
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
@@ -15,15 +14,17 @@ export function middleware(request: NextRequest) {
 
   if (!isProtected) return NextResponse.next()
 
-  const sessionToken = request.cookies.get(SESSION_COOKIE)?.value
-  if (!sessionToken) {
+  // getSessionCookie handles both "better-auth.session_token" (HTTP)
+  // and "__Secure-better-auth.session_token" (HTTPS on Vercel) automatically
+  const sessionCookie = getSessionCookie(request)
+  if (!sessionCookie) {
     const loginUrl = new URL('/login', request.url)
     loginUrl.searchParams.set('next', pathname)
     return NextResponse.redirect(loginUrl)
   }
 
   const response = NextResponse.next()
-  response.headers.set('x-session-token', sessionToken)
+  response.headers.set('x-session-token', sessionCookie)
   return response
 }
 
