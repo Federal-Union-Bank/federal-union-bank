@@ -3,22 +3,25 @@ import { sql } from 'drizzle-orm'
 import { db } from '@/lib/db'
 import { getUserId } from '@/lib/session'
 
-export const runtime = 'nodejs'
-
 export async function GET(request: Request) {
   try {
     const userId = await getUserId(request)
 
+    // Always check admin flag from users table first (this always exists)
+    const adminResult = await db.execute(
+      sql`SELECT is_admin FROM users WHERE id = ${userId}`,
+    )
+    const isAdmin = (adminResult.rows[0] as { is_admin: boolean } | undefined)?.is_admin ?? false
+
+    // Then try to get profile data (might not exist for admin)
     const result = await db.execute(sql`
-      SELECT p.account_id, p.pin_hash, p.referral_code, p.phone, p.avatar_url,
-             u.is_admin
-      FROM user_profiles p
-      JOIN users u ON u.id = p.user_id
-      WHERE p.user_id = ${userId}
+      SELECT account_id, pin_hash, referral_code, phone, avatar_url
+      FROM user_profiles
+      WHERE user_id = ${userId}
     `)
 
     const row = result.rows[0] as
-      | { account_id: string; pin_hash: string | null; referral_code: string; phone: string | null; avatar_url: string | null; is_admin: boolean }
+      | { account_id: string; pin_hash: string | null; referral_code: string; phone: string | null; avatar_url: string | null }
       | undefined
 
     if (!row) {
@@ -26,15 +29,15 @@ export async function GET(request: Request) {
       const accountId = String(Math.floor(1_000_000_000 + Math.random() * 9_000_000_000))
       const referralCode = userId.slice(0, 8).toUpperCase()
 
-      await db.execute(sql`
-        INSERT INTO user_profiles (user_id, account_id, referral_code)
-        VALUES (${userId}, ${accountId}, ${referralCode})
-        ON CONFLICT (user_id) DO NOTHING
-      `)
-
-      // Check admin flag
-      const adminResult = await db.execute(sql`SELECT is_admin FROM users WHERE id = ${userId}`)
-      const isAdmin = (adminResult.rows[0] as { is_admin: boolean } | undefined)?.is_admin ?? false
+      try {
+        await db.execute(sql`
+          INSERT INTO user_profiles (user_id, account_id, referral_code)
+          VALUES (${userId}, ${accountId}, ${referralCode})
+          ON CONFLICT (user_id) DO NOTHING
+        `)
+      } catch {
+        // Table might not exist — return with generated values anyway
+      }
 
       return NextResponse.json({
         accountId,
@@ -52,17 +55,34 @@ export async function GET(request: Request) {
       referralCode: row.referral_code,
       phone:        row.phone,
       avatarUrl:    row.avatar_url,
-      isAdmin:      !!row.is_admin,
+      isAdmin,
     })
   } catch (err) {
     console.error('[profile] error:', err)
-    return NextResponse.json({
-      accountId:    '',
-      pinSet:       false,
-      referralCode: '',
-      phone:        null,
-      avatarUrl:    null,
-      isAdmin:      false,
-    })
+
+    // Even on error, try to return isAdmin so the admin button shows
+    try {
+      const uid = await getUserId(request)
+      const adminResult = await db.execute(sql`SELECT is_admin FROM users WHERE id = ${uid}`)
+      const isAdmin = (adminResult.rows[0] as { is_admin: boolean } | undefined)?.is_admin ?? false
+
+      return NextResponse.json({
+        accountId:    '',
+        pinSet:       false,
+        referralCode: '',
+        phone:        null,
+        avatarUrl:    null,
+        isAdmin,
+      })
+    } catch {
+      return NextResponse.json({
+        accountId:    '',
+        pinSet:       false,
+        referralCode: '',
+        phone:        null,
+        avatarUrl:    null,
+        isAdmin:      false,
+      })
+    }
   }
 }
