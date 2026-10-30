@@ -4,6 +4,8 @@ import { db } from '@/lib/db'
 import { getUsdcPrice } from '@/lib/price'
 import { getUserId } from '@/lib/session'
 
+export const runtime = 'nodejs'
+
 export async function GET(request: Request) {
   const id = await getUserId(request)
   const price = await getUsdcPrice()

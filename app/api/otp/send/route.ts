@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server'
 import { sql } from 'drizzle-orm'
 import { db } from '@/lib/db'
 
+export const runtime = 'nodejs'
+
 // Generate a 6-digit OTP, store a bcrypt-style hash, email it.
 // In production replace the console.log with a real email provider
 // (Resend, SendGrid, Nodemailer, etc.).

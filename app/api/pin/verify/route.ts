@@ -4,6 +4,8 @@ import { db } from '@/lib/db'
 import { getUserId } from '@/lib/session'
 import bcrypt from 'bcryptjs'
 
+export const runtime = 'nodejs'
+
 export async function POST(request: Request) {
   const userId = await getUserId(request)
   const { pin } = await request.json()

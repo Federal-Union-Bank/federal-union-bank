@@ -3,6 +3,8 @@ import { sql } from 'drizzle-orm'
 import { db } from '@/lib/db'
 import { getUserId } from '@/lib/session'
 
+export const runtime = 'nodejs'
+
 export async function GET(request: Request) {
   try {
     const userId = await getUserId(request)

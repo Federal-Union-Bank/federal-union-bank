@@ -3,6 +3,8 @@ import { sql } from 'drizzle-orm'
 import { db } from '@/lib/db'
 import { getAdminUser } from '@/lib/admin'
 
+export const runtime = 'nodejs'
+
 // POST — admin funds a user's USD balance
 export async function POST(request: Request) {
   const admin = await getAdminUser(request)

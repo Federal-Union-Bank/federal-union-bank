@@ -3,6 +3,8 @@ import { sql } from 'drizzle-orm'
 import { db } from '@/lib/db'
 import { getAdminUser } from '@/lib/admin'
 
+export const runtime = 'nodejs'
+
 // GET — admin overview stats
 export async function GET(request: Request) {
   const admin = await getAdminUser(request)

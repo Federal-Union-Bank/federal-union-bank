@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server'
 import { sql } from 'drizzle-orm'
 import { db } from '@/lib/db'
 
+export const runtime = 'nodejs'
+
 export async function POST(request: Request) {
   const { email, otp } = await request.json()
 

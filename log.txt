@@ -1,0 +1,1 @@
+﻿eabee15 Fix Vercel auth: add trustedOrigins, improve login error messages

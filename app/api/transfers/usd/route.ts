@@ -4,6 +4,8 @@ import { db } from '@/lib/db'
 import { getUserId } from '@/lib/session'
 
 // GET recent USD transfers
+export const runtime = 'nodejs'
+
 export async function GET(request: Request) {
   const id = await getUserId(request)
   const result = await db.execute(

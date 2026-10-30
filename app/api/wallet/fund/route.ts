@@ -3,6 +3,8 @@ import { sql } from 'drizzle-orm'
 import { db } from '@/lib/db'
 import { getUserId } from '@/lib/session'
 
+export const runtime = 'nodejs'
+
 export async function POST(request: Request) {
   const id = await getUserId(request)
   const body = await request.json()

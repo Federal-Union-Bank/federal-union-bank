@@ -4,6 +4,8 @@ import { db } from '@/lib/db'
 import { getUserId } from '@/lib/session'
 
 // Deposit USD into your account (demo — adds to balance)
+export const runtime = 'nodejs'
+
 export async function POST(request: Request) {
   const id = await getUserId(request)
   const body = await request.json()
