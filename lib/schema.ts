@@ -67,7 +67,18 @@ export const emailOtps = pgTable('email_otps', {
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
 })
 
-// ── Savings (OWealth-style) ────────────────────────────────────────────────
+// ── Virtual card ──────────────────────────────────────────────────────────
+export const virtualCards = pgTable('virtual_cards', {
+  id:         uuid('id').primaryKey().defaultRandom(),
+  userId:     text('user_id').notNull().unique(),
+  cardNumber: text('card_number').notNull(),       // 16-digit, stored encrypted in prod
+  expiry:     text('expiry').notNull(),             // MM/YY
+  cvv:        text('cvv').notNull(),                // 3-digit
+  cardName:   text('card_name').notNull(),
+  frozen:     boolean('frozen').notNull().default(false),
+  createdAt:  timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+  updatedAt:  timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
+})
 export const savings = pgTable('savings', {
   id:          uuid('id').primaryKey().defaultRandom(),
   userId:      text('user_id').notNull(),

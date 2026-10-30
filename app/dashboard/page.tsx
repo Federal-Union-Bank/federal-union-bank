@@ -6,7 +6,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import {
   ArrowUpRight, Check, Copy, Droplets, Eye, EyeOff,
-  Gift, History, Phone, PiggyBank,
+  CreditCard, Gift, History, Phone, PiggyBank,
   Send, Settings, ShieldCheck, TrendingUp,
   Wallet, Wifi, Zap,
 } from 'lucide-react'
@@ -180,6 +180,9 @@ export default function DashboardPage() {
           {/* Trade USDC button — top right */}
           <Link href="/usdc" className="mr-2 flex items-center gap-2 rounded-lg bg-[#1b5cff] px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-[#1549d1]">
             <Zap size={15} /> Trade USDC
+          </Link>
+          <Link href="/card" className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-[#506078] hover:bg-[#f1f4f8]">
+            <CreditCard size={16} /><span className="hidden sm:inline">Card</span>
           </Link>
           <Link href="/history" className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-[#506078] hover:bg-[#f1f4f8]">
             <History size={16} /><span className="hidden sm:inline">History</span>
@@ -393,10 +396,10 @@ export default function DashboardPage() {
                 <b className="block text-sm">History</b>
                 <span className="text-xs text-[#73809a]">All transactions</span>
               </Link>
-              <Link href="/settings" className="rounded-xl border border-[#e3e8f0] p-4 text-left transition hover:border-[#1b5cff] hover:bg-[#f8faff]">
-                <Settings size={20} className="mb-3 text-[#1b5cff]" />
-                <b className="block text-sm">Settings</b>
-                <span className="text-xs text-[#73809a]">Profile & security</span>
+              <Link href="/card" className="rounded-xl border border-[#e3e8f0] p-4 text-left transition hover:border-[#1b5cff] hover:bg-[#f8faff]">
+                <CreditCard size={20} className="mb-3 text-[#1b5cff]" />
+                <b className="block text-sm">My card</b>
+                <span className="text-xs text-[#73809a]">View & manage</span>
               </Link>
             </div>
           </div>

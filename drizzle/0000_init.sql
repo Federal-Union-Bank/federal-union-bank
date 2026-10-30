@@ -122,6 +122,19 @@ CREATE TABLE IF NOT EXISTS usd_transfers (
   created_at   TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
+-- ── Virtual cards ────────────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS virtual_cards (
+  id           UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id      TEXT NOT NULL UNIQUE,
+  card_number  TEXT NOT NULL,
+  expiry       TEXT NOT NULL,
+  cvv          TEXT NOT NULL,
+  card_name    TEXT NOT NULL,
+  frozen       BOOLEAN NOT NULL DEFAULT FALSE,
+  created_at   TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at   TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
 -- ── Savings ───────────────────────────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS savings (
   id            UUID PRIMARY KEY DEFAULT gen_random_uuid(),

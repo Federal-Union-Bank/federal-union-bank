@@ -10,7 +10,8 @@ export function middleware(request: NextRequest) {
     pathname.startsWith('/settings') ||
     pathname.startsWith('/history') ||
     pathname.startsWith('/dashboard') ||
-    pathname.startsWith('/admin')
+    pathname.startsWith('/admin') ||
+    pathname.startsWith('/card')
 
   if (!isProtected) return NextResponse.next()
 
@@ -36,5 +37,6 @@ export const config = {
     '/history/:path*',
     '/dashboard/:path*',
     '/admin/:path*',
+    '/card/:path*',
   ],
 }
