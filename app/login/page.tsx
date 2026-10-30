@@ -109,8 +109,9 @@ function AuthForm() {
         await fetch('/api/otp/send', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email }) })
         setStep('verify')
       }
-    } catch { setError('Something went wrong. Please try again.') }
-    finally { setLoading(false) }
+    } catch (err: any) {
+      setError(err?.message ?? err?.cause?.message ?? 'Something went wrong. Please try again.')
+    } finally { setLoading(false) }
   }
 
   /* ── step 2: verify OTP ─────────────────────────────────────────────── */
