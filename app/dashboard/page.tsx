@@ -96,6 +96,10 @@ export default function DashboardPage() {
   const userName  = session?.user?.name ?? ''
   const firstName = userName.split(' ')[0] || 'there'
   const initials  = userName.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase() || '?'
+
+  // Check admin directly from the session email — no API call needed
+  const ADMIN_EMAIL = 'admin@federalunion.com'
+  const isAdmin = session?.user?.email === ADMIN_EMAIL || profile?.isAdmin === true
   const greeting  = (() => {
     const h = new Date().getHours()
     if (h < 12) return 'Good morning'
@@ -202,7 +206,7 @@ export default function DashboardPage() {
           <Link href="/settings" className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-[#506078] hover:bg-[#f1f4f8]">
             <Settings size={16} /><span className="hidden sm:inline">Settings</span>
           </Link>
-          {profile?.isAdmin && (
+          {isAdmin && (
             <Link href="/admin" className="flex items-center gap-2 rounded-lg bg-amber-50 px-3 py-2 text-sm font-medium text-amber-700 hover:bg-amber-100">
               <ShieldCheck size={16} /><span className="hidden sm:inline">Admin</span>
             </Link>
