@@ -3,6 +3,10 @@ import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 import { db } from '@/lib/db'
 import { sql } from 'drizzle-orm'
 import * as schema from '@/lib/schema'
+import { runMigrations } from '@/lib/migrate'
+
+// Run schema migrations on first auth request (idempotent)
+runMigrations()
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {

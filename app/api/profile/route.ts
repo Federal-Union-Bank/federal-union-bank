@@ -3,15 +3,29 @@ import { sql } from 'drizzle-orm'
 import { db } from '@/lib/db'
 import { getUserId } from '@/lib/session'
 
+export const runtime = 'nodejs'
+
 export async function GET(request: Request) {
   try {
     const userId = await getUserId(request)
 
-    // Always check admin flag from users table first (this always exists)
-    const adminResult = await db.execute(
-      sql`SELECT is_admin FROM users WHERE id = ${userId}`,
-    )
-    const isAdmin = (adminResult.rows[0] as { is_admin: boolean } | undefined)?.is_admin ?? false
+    // Check admin — try is_admin column first, fall back to email check
+    let isAdmin = false
+    try {
+      const adminResult = await db.execute(
+        sql`SELECT is_admin FROM users WHERE id = ${userId}`,
+      )
+      isAdmin = (adminResult.rows[0] as { is_admin: boolean } | undefined)?.is_admin ?? false
+    } catch {
+      // is_admin column might not exist yet — fall back to email
+      try {
+        const emailResult = await db.execute(
+          sql`SELECT email FROM users WHERE id = ${userId}`,
+        )
+        const email = (emailResult.rows[0] as { email: string } | undefined)?.email ?? ''
+        isAdmin = email === (process.env.ADMIN_EMAIL ?? 'admin@federalunion.com')
+      } catch {}
+    }
 
     // Then try to get profile data (might not exist for admin)
     const result = await db.execute(sql`
