@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 import {
   ArrowLeft, Bell, ChevronRight, CreditCard, Eye, EyeOff,
   Globe, KeyRound, LogOut, Moon, Settings, ShieldCheck,
@@ -155,10 +156,7 @@ export default function SettingsPage() {
       {/* ── Header ─────────────────────────────────────────────────── */}
       <header className="flex h-16 items-center justify-between border-b border-[#e7ebf2] bg-white px-6 sm:px-8">
         <div className="flex items-center gap-3">
-          <div className="grid size-9 place-items-center rounded-xl bg-[#1b5cff] text-white">
-            <ShieldCheck size={18} />
-          </div>
-          <span className="font-bold tracking-tight text-[#172033]">Federal Union Bank</span>
+          <Image src="/logo.png" alt="Federal Union Banking" width={140} height={40} className="h-10 w-auto object-contain" />
         </div>
         <Link
           href="/dashboard"

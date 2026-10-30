@@ -2,6 +2,7 @@
 
 import { useState, Suspense, useRef, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
+import Image from 'next/image'
 import {
   ArrowRight, Check, Eye, EyeOff, KeyRound, Mail,
   ShieldCheck, User,
@@ -16,8 +17,7 @@ function BrandLeft() {
       <div className="pointer-events-none absolute inset-0 opacity-[0.06]"
         style={{ backgroundImage: 'linear-gradient(#fff 1px,transparent 1px),linear-gradient(90deg,#fff 1px,transparent 1px)', backgroundSize: '40px 40px' }} />
       <div className="relative flex items-center gap-3">
-        <div className="grid size-10 place-items-center rounded-xl bg-white/20 text-white backdrop-blur-sm"><ShieldCheck size={20} /></div>
-        <span className="text-lg font-bold tracking-tight text-white">Federal Union Bank</span>
+        <Image src="/logo.png" alt="Federal Union Banking" width={160} height={50} className="h-12 w-auto object-contain brightness-0 invert" />
       </div>
       <div className="relative">
         <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-xs font-semibold text-blue-100">
@@ -42,8 +42,7 @@ function BrandLeft() {
 function MobileLogo() {
   return (
     <div className="mb-8 flex items-center gap-3 lg:hidden">
-      <div className="grid size-9 place-items-center rounded-xl bg-[#1b5cff] text-white"><ShieldCheck size={18} /></div>
-      <span className="text-lg font-bold tracking-tight text-[#172033]">Federal Union Bank</span>
+      <Image src="/logo.png" alt="Federal Union Banking" width={160} height={50} className="h-12 w-auto object-contain" />
     </div>
   )
 }

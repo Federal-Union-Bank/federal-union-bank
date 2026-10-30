@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 import {
   ArrowDownLeft, ArrowUpRight, ArrowLeft,
   Check, Clock, ShieldCheck, Send,
@@ -64,10 +65,7 @@ export default function HistoryPage() {
       {/* Header */}
       <header className="flex h-16 items-center justify-between border-b border-[#e7ebf2] bg-white px-6 sm:px-8">
         <div className="flex items-center gap-3">
-          <div className="grid size-9 place-items-center rounded-xl bg-[#1b5cff] text-white">
-            <ShieldCheck size={18} />
-          </div>
-          <span className="font-bold tracking-tight">Federal Union Bank</span>
+          <Image src="/logo.png" alt="Federal Union Banking" width={140} height={40} className="h-10 w-auto object-contain" />
         </div>
         <Link href="/dashboard" className="flex items-center gap-2 rounded-lg border border-[#e0e6ef] bg-white px-3 py-2 text-sm font-medium text-[#506078] hover:bg-slate-50">
           <ArrowLeft size={15} /> Dashboard

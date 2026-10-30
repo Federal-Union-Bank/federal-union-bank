@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 import {
   ArrowUpRight, Check, Eye, EyeOff, Plus, Search,
   ShieldCheck, TrendingUp, Users, Wallet,
@@ -127,10 +128,7 @@ export default function AdminPage() {
       {/* Header */}
       <header className="flex h-16 items-center justify-between border-b border-[#e7ebf2] bg-white px-6 sm:px-8">
         <div className="flex items-center gap-3">
-          <div className="grid size-9 place-items-center rounded-xl bg-[#1b5cff] text-white">
-            <ShieldCheck size={18} />
-          </div>
-          <span className="font-bold tracking-tight">Admin Panel · Federal Union Bank</span>
+          <Image src="/logo.png" alt="Federal Union Banking" width={140} height={40} className="h-10 w-auto object-contain" />
         </div>
         <Link href="/dashboard" className="flex items-center gap-2 rounded-lg border border-[#e0e6ef] bg-white px-3 py-2 text-sm font-medium text-[#506078] hover:bg-slate-50">
           ← Dashboard
@@ -214,7 +212,15 @@ export default function AdminPage() {
             </div>
           </div>
 
-          {loading ? (
+            {/* Fund modal trigger already exists — also add quick deposit section */}
+          <div className="mb-8 rounded-2xl border border-[#e3e8f0] bg-white p-6">
+            <h2 className="mb-1 font-bold">Fund a user account</h2>
+            <p className="mb-5 text-sm text-[#73809a]">Search for a user below and click <strong>Fund</strong> to add USD to their balance.</p>
+            <div className="flex items-center gap-3 rounded-xl bg-[#f5f8ff] px-4 py-3 text-sm text-[#3d5a9e]">
+              <ShieldCheck size={16} />
+              Only admin accounts can deposit funds. Regular users can only transfer.
+            </div>
+          </div>
             <div className="py-16 text-center text-sm text-[#73809a]">Loading accounts…</div>
           ) : filteredUsers.length === 0 ? (
             <div className="py-16 text-center text-sm text-[#73809a]">No accounts found.</div>

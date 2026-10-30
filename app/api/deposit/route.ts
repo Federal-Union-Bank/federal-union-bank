@@ -1,35 +1,41 @@
 import { NextResponse } from 'next/server'
 import { sql } from 'drizzle-orm'
 import { db } from '@/lib/db'
-import { getUserId } from '@/lib/session'
+import { getAdminUser } from '@/lib/admin'
 
-// Deposit USD into your account (demo — adds to balance)
 export const runtime = 'nodejs'
 
+// Only the admin can deposit funds into any account
 export async function POST(request: Request) {
-  const id = await getUserId(request)
-  const body = await request.json()
+  const admin = await getAdminUser(request)
+  if (!admin) {
+    return NextResponse.json(
+      { error: 'Only an admin can deposit funds into accounts.' },
+      { status: 403 },
+    )
+  }
+
+  const body   = await request.json()
+  // Admin can specify a target userId, or defaults to their own
+  const targetUserId = String(body.userId || admin.id)
   const amount = Number(body.amount)
 
-  if (!Number.isFinite(amount) || amount <= 0 || amount > 1_000_000) {
+  if (!Number.isFinite(amount) || amount <= 0 || amount > 10_000_000) {
     return NextResponse.json({ error: 'Enter a valid amount.' }, { status: 400 })
   }
 
-  // In a real app this would integrate with a payment processor.
-  // For the demo, we just credit the account.
   const result = await db.execute(
     sql`UPDATE user_balances
         SET usd_balance = usd_balance + ${amount},
             updated_at  = now()
-        WHERE user_id = ${id}
+        WHERE user_id = ${targetUserId}
         RETURNING usd_balance`,
   )
 
   if (!result.rows.length) {
-    // Create balance row if missing
     await db.execute(sql`
       INSERT INTO user_balances (user_id, usd_balance)
-      VALUES (${id}, ${amount})
+      VALUES (${targetUserId}, ${amount})
       ON CONFLICT (user_id) DO UPDATE
       SET usd_balance = user_balances.usd_balance + ${amount}
     `)

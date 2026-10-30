@@ -1,0 +1,9 @@
+﻿git : To https://github.com/Federal-Union-Bank/federal-union-bank.git
+At line:1 char:157
++ ... , new tables, fix admin detection"; git push origin main 2>&1 | Out-F ...
++                                         ~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (To https://gith...-union-bank.git 
+   :String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+   eef0d23..8662031  main -> main

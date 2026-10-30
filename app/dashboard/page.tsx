@@ -3,9 +3,10 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 import {
   ArrowUpRight, Check, Copy, Droplets, Eye, EyeOff,
-  Gift, History, Phone, PiggyBank, Plus,
+  Gift, History, Phone, PiggyBank,
   Send, Settings, ShieldCheck, TrendingUp,
   Wallet, Wifi, Zap,
 } from 'lucide-react'
@@ -54,9 +55,6 @@ export default function DashboardPage() {
   const [message, setMessage]       = useState('')
   const [loading, setLoading]       = useState(false)
   const [copiedAcct, setCopiedAcct]  = useState(false)
-
-  // Deposit form
-  const [depositAmount, setDepositAmount] = useState('')
 
   // PIN modal
   const [pinOpen, setPinOpen]       = useState(false)
@@ -131,20 +129,6 @@ export default function DashboardPage() {
     setPinOpen(true)
   }
 
-  /* ── deposit ──────────────────────────────────────────────────────────── */
-  async function handleDeposit() {
-    setLoading(true); setMessage('')
-    const res = await fetch('/api/deposit', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ amount: depositAmount }),
-    })
-    const result = await res.json()
-    setMessage(result.error || `Deposited $${Number(depositAmount).toFixed(2)} into your account.`)
-    if (!result.error) { setDepositAmount(''); await refresh() }
-    setLoading(false)
-  }
-
   /* ── savings (requires PIN) ──────────────────────────────────────────── */
   async function doSavingsAction() {
     setPinOpen(false)
@@ -190,10 +174,7 @@ export default function DashboardPage() {
       {/* ── Header ─────────────────────────────────────────────────── */}
       <header className="flex h-16 items-center justify-between border-b border-[#e7ebf2] bg-white px-6 sm:px-8">
         <div className="flex items-center gap-3">
-          <div className="grid size-9 place-items-center rounded-xl bg-[#1b5cff] text-white">
-            <ShieldCheck size={18} />
-          </div>
-          <span className="font-bold tracking-tight">Federal Union Bank</span>
+          <Image src="/logo.png" alt="Federal Union Banking" width={140} height={40} className="h-10 w-auto object-contain" />
         </div>
         <div className="flex items-center gap-1">
           {/* Trade USDC button — top right */}
@@ -313,17 +294,15 @@ export default function DashboardPage() {
           </section>
         )}
 
-        {/* Transfer + Deposit */}
-        <section className="mt-7 grid gap-5 lg:grid-cols-2">
-          {/* Transfer */}
-          <div className="rounded-2xl border border-[#e3e8f0] bg-white p-6">
-            <div className="mb-5 flex items-center justify-between">
-              <div>
-                <h2 className="font-bold">Send money</h2>
-                <p className="mt-1 text-sm text-[#73809a]">Transfer dollars to any account. PIN required.</p>
-              </div>
-              <Send size={20} className="text-[#1b5cff]" />
+        {/* Transfer only — deposit is admin-only */}
+        <section className="mt-7 rounded-2xl border border-[#e3e8f0] bg-white p-6">
+          <div className="mb-5 flex items-center justify-between">
+            <div>
+              <h2 className="font-bold">Send money</h2>
+              <p className="mt-1 text-sm text-[#73809a]">Transfer dollars to any account. PIN required.</p>
             </div>
+            <Send size={20} className="text-[#1b5cff]" />
+          </div>
             <label className="block text-sm font-medium text-[#506078]">
               Recipient (account number or email)
               <input value={recipient} onChange={e => setRecipient(e.target.value)} placeholder="e.g. 7823041965"
@@ -342,35 +321,7 @@ export default function DashboardPage() {
             <button disabled={loading} onClick={requestTransfer} className="mt-5 w-full rounded-lg bg-[#1b5cff] py-3 font-semibold text-white hover:bg-[#1549d1] disabled:opacity-60">
               {loading ? 'Processing…' : 'Review transfer'}
             </button>
-          </div>
-
-          {/* Deposit */}
-          <div className="rounded-2xl border border-[#e3e8f0] bg-white p-6">
-            <div className="mb-5 flex items-center justify-between">
-              <div>
-                <h2 className="font-bold">Deposit</h2>
-                <p className="mt-1 text-sm text-[#73809a]">Add money to your account.</p>
-              </div>
-              <Plus size={20} className="text-[#1b5cff]" />
-            </div>
-            <label className="block text-sm font-medium text-[#506078]">
-              Amount (USD)
-              <input value={depositAmount} onChange={e => setDepositAmount(e.target.value)} placeholder="0.00" inputMode="decimal"
-                className="mt-2 w-full rounded-lg border border-[#dfe5ee] px-4 py-3 text-lg outline-none focus:border-[#1b5cff]" />
-            </label>
-            <div className="mt-3 flex gap-2">
-              {['50', '100', '500', '1000'].map(a => (
-                <button key={a} onClick={() => setDepositAmount(a)}
-                  className="flex-1 rounded-lg border border-[#dfe5ee] py-2 text-sm font-semibold text-[#506078] hover:border-[#1b5cff] hover:text-[#1b5cff]">
-                  ${a}
-                </button>
-              ))}
-            </div>
-            <button disabled={loading || !depositAmount} onClick={handleDeposit} className="mt-5 w-full rounded-lg border border-[#1b5cff] py-3 font-semibold text-[#1b5cff] hover:bg-[#f1f5ff] disabled:opacity-60">
-              {loading ? 'Processing…' : 'Deposit money'}
-            </button>
-          </div>
-        </section>
+          </section>
 
         {/* Services */}
         <section className="mt-7 rounded-2xl border border-[#e3e8f0] bg-white p-6">

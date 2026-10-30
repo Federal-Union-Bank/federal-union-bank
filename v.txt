@@ -1,0 +1,1 @@
+﻿8662031 Auto-migrate schema on startup: add is_admin, new tables, fix admin detection
