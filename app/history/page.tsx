@@ -129,7 +129,7 @@ export default function HistoryPage() {
                         {/* Status */}
                         <span className={`shrink-0 rounded-full px-2 py-0.5 text-[10px] font-semibold
                           ${tx.status === 'completed' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'}`}>
-                          {tx.status === 'completed' ? <><Check size={10} className="inline" /> Done</> : <Clock size={10} className="inline" /> Pending}
+                          {tx.status === 'completed' ? <><Check size={10} className="inline" /> Done</> : <><Clock size={10} className="inline" /> Pending</>}
                         </span>
                       </div>
                     ))}

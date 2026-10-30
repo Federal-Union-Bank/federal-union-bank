@@ -1,0 +1,8 @@
+﻿gh : GraphQL: Name already exists on this account (createRepository)
+At line:1 char:1
++ gh repo create Federal-Union-Bank/federal-union-bank --public --sourc ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (GraphQL: Name a...eateRepository) 
+   :String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
