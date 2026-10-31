@@ -129,7 +129,7 @@ export default function AdminPage() {
       {/* Header */}
       <header className="flex h-16 items-center justify-between border-b border-[#e7ebf2] bg-white px-6 sm:px-8">
         <div className="flex items-center gap-3">
-          <Image src="/logo.png" alt="Federal Union Banking" width={140} height={40} className="h-10 w-auto object-contain" />
+          <Image src="/logo.png" alt="Federal Union Banking" width={200} height={56} className="h-14 w-auto object-contain" />
         </div>
         <Link href="/dashboard" className="flex items-center gap-2 rounded-lg border border-[#e0e6ef] bg-white px-3 py-2 text-sm font-medium text-[#506078] hover:bg-slate-50">
           ← Dashboard
@@ -276,14 +276,12 @@ export default function AdminPage() {
                         {new Date(u.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                       </td>
                       <td className="px-4 py-3.5 text-right">
-                        {!u.is_admin && (
-                          <button
-                            onClick={() => { setFundUser(u); setFundAmount(''); setFundMsg('') }}
-                            className="inline-flex items-center gap-1.5 rounded-lg bg-[#1b5cff] px-3 py-1.5 text-xs font-semibold text-white hover:bg-[#1549d1]"
-                          >
-                            <Plus size={14} /> Fund
-                          </button>
-                        )}
+                        <button
+                          onClick={() => { setFundUser(u); setFundAmount(''); setFundMsg('') }}
+                          className="inline-flex items-center gap-1.5 rounded-lg bg-[#1b5cff] px-3 py-1.5 text-xs font-semibold text-white hover:bg-[#1549d1]"
+                        >
+                          <Plus size={14} /> Fund
+                        </button>
                       </td>
                     </tr>
                   ))}

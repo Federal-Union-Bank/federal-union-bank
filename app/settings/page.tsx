@@ -156,7 +156,7 @@ export default function SettingsPage() {
       {/* ── Header ─────────────────────────────────────────────────── */}
       <header className="flex h-16 items-center justify-between border-b border-[#e7ebf2] bg-white px-6 sm:px-8">
         <div className="flex items-center gap-3">
-          <Image src="/logo.png" alt="Federal Union Banking" width={140} height={40} className="h-10 w-auto object-contain" />
+          <Image src="/logo.png" alt="Federal Union Banking" width={200} height={56} className="h-14 w-auto object-contain" />
         </div>
         <Link
           href="/dashboard"
