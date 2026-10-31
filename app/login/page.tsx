@@ -2,7 +2,7 @@
 
 import { useState, Suspense, useRef, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import Logo from '@/components/Logo'
+import Image from 'next/image'
 import {
   ArrowRight, Check, Eye, EyeOff, KeyRound, Mail,
   ShieldCheck, User,
@@ -17,7 +17,7 @@ function BrandLeft() {
       <div className="pointer-events-none absolute inset-0 opacity-[0.06]"
         style={{ backgroundImage: 'linear-gradient(#fff 1px,transparent 1px),linear-gradient(90deg,#fff 1px,transparent 1px)', backgroundSize: '40px 40px' }} />
       <div className="relative flex items-center gap-3">
-        <Logo className="h-12 w-auto" inverted />
+        <Image src="/logo.png" alt="Federal Union Banking" width={160} height={50} className="h-12 w-auto object-contain brightness-0 invert" />
       </div>
       <div className="relative">
         <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-xs font-semibold text-blue-100">
@@ -42,7 +42,7 @@ function BrandLeft() {
 function MobileLogo() {
   return (
     <div className="mb-8 flex items-center gap-3 lg:hidden">
-      <Logo className="h-12 w-auto" />
+      <Image src="/logo.png" alt="Federal Union Banking" width={160} height={50} className="h-12 w-auto object-contain" />
     </div>
   )
 }

@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import Logo from '@/components/Logo'
+import Image from 'next/image'
 import {
   ArrowLeft, Check, Copy, Eye, EyeOff,
   Lock, ShieldCheck, Unlock, Wifi,
@@ -89,7 +89,7 @@ export default function CardPage() {
       {/* Header */}
       <header className="flex h-16 items-center justify-between border-b border-[#e7ebf2] bg-white px-6 sm:px-8">
         <div className="flex items-center gap-3">
-          <Logo className="h-10 w-auto" />
+          <Image src="/logo.png" alt="Federal Union Banking" width={140} height={40} className="h-10 w-auto object-contain" />
         </div>
         <Link href="/dashboard" className="flex items-center gap-2 rounded-lg border border-[#e0e6ef] bg-white px-3 py-2 text-sm font-medium text-[#506078] hover:bg-slate-50">
           <ArrowLeft size={15} /> Dashboard

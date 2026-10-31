@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import Logo from '@/components/Logo'
+import Image from 'next/image'
 import { ArrowLeft } from 'lucide-react'
 import { type ReactNode } from 'react'
 
@@ -18,7 +18,7 @@ export default function ServicePage({ title, subtitle, icon, children }: Props) 
       {/* Header */}
       <header className="flex h-20 items-center justify-between border-b border-[#e7ebf2] bg-white px-8">
         <div className="flex items-center gap-3">
-          <Logo className="h-10 w-auto" />
+          <Image src="/logo.png" alt="Federal Union Banking" width={140} height={40} className="h-10 w-auto object-contain" />
         </div>
         <Link
           href="/dashboard"

@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import Logo from '@/components/Logo'
+import Image from 'next/image'
 import {
   ArrowUpRight, Check, Copy, Droplets, Eye, EyeOff,
   CreditCard, Gift, History, Phone, PiggyBank,
@@ -174,7 +174,7 @@ export default function DashboardPage() {
       {/* ── Header ─────────────────────────────────────────────────── */}
       <header className="flex h-16 items-center justify-between border-b border-[#e7ebf2] bg-white px-6 sm:px-8">
         <div className="flex items-center gap-3">
-          <Logo className="h-10 w-auto" />
+          <Image src="/logo.png" alt="Federal Union Banking" width={140} height={40} className="h-10 w-auto object-contain" />
         </div>
         <div className="flex items-center gap-1">
           {/* Trade USDC button — top right */}
