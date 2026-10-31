@@ -212,15 +212,17 @@ export default function AdminPage() {
             </div>
           </div>
 
-            {/* Fund modal trigger already exists — also add quick deposit section */}
-          <div className="mb-8 rounded-2xl border border-[#e3e8f0] bg-white p-6">
+          {/* Fund a user account info */}
+          <div className="mb-5 rounded-2xl border border-[#e3e8f0] bg-white p-6">
             <h2 className="mb-1 font-bold">Fund a user account</h2>
-            <p className="mb-5 text-sm text-[#73809a]">Search for a user below and click <strong>Fund</strong> to add USD to their balance.</p>
+            <p className="mb-4 text-sm text-[#73809a]">Search for a user below and click <strong>Fund</strong> to add USD to their balance.</p>
             <div className="flex items-center gap-3 rounded-xl bg-[#f5f8ff] px-4 py-3 text-sm text-[#3d5a9e]">
               <ShieldCheck size={16} />
               Only admin accounts can deposit funds. Regular users can only transfer.
             </div>
           </div>
+
+          {loading ? (
             <div className="py-16 text-center text-sm text-[#73809a]">Loading accounts…</div>
           ) : filteredUsers.length === 0 ? (
             <div className="py-16 text-center text-sm text-[#73809a]">No accounts found.</div>
