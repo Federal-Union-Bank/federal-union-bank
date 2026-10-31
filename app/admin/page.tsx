@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import {
-  ArrowUpRight, Check, Eye, EyeOff, Plus, Search,
+  Check, Eye, EyeOff, Plus, Search,
   ShieldCheck, TrendingUp, Users, Wallet,
 } from 'lucide-react'
 import { useSession } from '@/lib/auth-client'
@@ -24,27 +24,25 @@ type UserRow = {
 
 type Stats = {
   users: { total: string; regular: string; admins: string }
-  balances: { total_usd: string; total_usdc: string; accounts_with_balance: string }
+  balances: { total_usd: string; total_usdc: string }
   savings: { total_savings: string }
-  recentTransactions: { type: string; user_id: string; amount: string; created_at: string }[]
 }
 
 export default function AdminPage() {
   const router = useRouter()
   const { data: session, isPending } = useSession()
 
-  const [stats, setStats] = useState<Stats | null>(null)
-  const [users, setUsers] = useState<UserRow[]>([])
-  const [loading, setLoading] = useState(true)
-  const [search, setSearch] = useState('')
+  const [stats, setStats]             = useState<Stats | null>(null)
+  const [users, setUsers]             = useState<UserRow[]>([])
+  const [loading, setLoading]         = useState(true)
+  const [search, setSearch]           = useState('')
   const [showBalances, setShowBalances] = useState(true)
-  const [authorized, setAuthorized] = useState(true)
+  const [authorized, setAuthorized]   = useState(true)
 
-  // Fund modal
-  const [fundUser, setFundUser] = useState<UserRow | null>(null)
-  const [fundAmount, setFundAmount] = useState('')
-  const [fundMsg, setFundMsg] = useState('')
-  const [funding, setFunding] = useState(false)
+  const [fundUser, setFundUser]       = useState<UserRow | null>(null)
+  const [fundAmount, setFundAmount]   = useState('')
+  const [fundMsg, setFundMsg]         = useState('')
+  const [funding, setFunding]         = useState(false)
 
   useEffect(() => {
     if (!isPending && !session) router.push('/login?next=/admin')
@@ -60,13 +58,11 @@ export default function AdminPage() {
         fetch('/api/admin/stats'),
         fetch('/api/admin/users'),
       ])
-
       if (statsRes.status === 401 || usersRes.status === 401) {
         setAuthorized(false)
         setLoading(false)
         return
       }
-
       if (statsRes.ok) setStats(await statsRes.json())
       if (usersRes.ok) setUsers((await usersRes.json()).users ?? [])
     } catch {}
@@ -96,16 +92,20 @@ export default function AdminPage() {
   const filteredUsers = users.filter(u =>
     u.name.toLowerCase().includes(search.toLowerCase()) ||
     u.email.toLowerCase().includes(search.toLowerCase()) ||
-    u.account_id?.includes(search)
+    (u.account_id ?? '').includes(search),
   )
 
   if (isPending || !session) {
-    return <div className="flex min-h-screen items-center justify-center bg-[#f7f9fc] text-[#73809a]">Loading…</div>
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-[#f7f9fc] text-[#73809a]">
+        Loading…
+      </div>
+    )
   }
 
   if (!authorized) {
     return (
-      <main className="flex min-h-screen flex-col items-center justify-center bg-[#f7f9fc] gap-4">
+      <main className="flex min-h-screen flex-col items-center justify-center gap-4 bg-[#f7f9fc]">
         <div className="grid size-16 place-items-center rounded-full bg-red-50 text-red-500">
           <ShieldCheck size={30} />
         </div>
@@ -118,13 +118,14 @@ export default function AdminPage() {
     )
   }
 
-  const totalUsd = Number(stats?.balances?.total_usd || 0)
-  const totalUsdc = Number(stats?.balances?.total_usdc || 0)
+  const totalUsd     = Number(stats?.balances?.total_usd   || 0)
+  const totalUsdc    = Number(stats?.balances?.total_usdc  || 0)
   const totalSavings = Number(stats?.savings?.total_savings || 0)
-  const totalUsers = Number(stats?.users?.regular || 0)
+  const totalUsers   = Number(stats?.users?.regular         || 0)
 
   return (
     <main className="min-h-screen bg-[#f7f9fc] text-[#172033]">
+
       {/* Header */}
       <header className="flex h-16 items-center justify-between border-b border-[#e7ebf2] bg-white px-6 sm:px-8">
         <div className="flex items-center gap-3">
@@ -137,14 +138,14 @@ export default function AdminPage() {
 
       <div className="mx-auto max-w-[1200px] px-6 py-8">
 
-        {/* Stats overview */}
+        {/* Page title */}
         <div className="mb-8">
           <h1 className="text-2xl font-bold tracking-tight">Overview</h1>
           <p className="mt-1 text-sm text-[#73809a]">Monitor and manage all accounts.</p>
         </div>
 
+        {/* Stats cards */}
         <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {/* Total users */}
           <div className="rounded-2xl border border-[#e3e8f0] bg-white p-5">
             <div className="flex items-center justify-between">
               <span className="text-xs font-medium text-[#73809a]">Total users</span>
@@ -155,7 +156,6 @@ export default function AdminPage() {
             <p className="mt-3 text-2xl font-bold">{totalUsers}</p>
           </div>
 
-          {/* Total USD */}
           <div className="rounded-2xl bg-[#1b5cff] p-5 text-white shadow-sm">
             <div className="flex items-center justify-between">
               <span className="text-xs font-medium text-blue-100">Total USD held</span>
@@ -166,7 +166,6 @@ export default function AdminPage() {
             </p>
           </div>
 
-          {/* Total USDC */}
           <div className="rounded-2xl border border-[#e3e8f0] bg-white p-5">
             <div className="flex items-center justify-between">
               <span className="text-xs font-medium text-[#73809a]">Total USDC held</span>
@@ -175,7 +174,6 @@ export default function AdminPage() {
             <p className="mt-3 text-2xl font-bold">{totalUsdc.toLocaleString()} USDC</p>
           </div>
 
-          {/* Total savings */}
           <div className="rounded-2xl border border-[#e3e8f0] bg-gradient-to-br from-[#4ac38b] to-[#2dd4bf] p-5 text-white shadow-sm">
             <div className="flex items-center justify-between">
               <span className="text-xs font-medium text-green-100">Total savings</span>
@@ -187,9 +185,21 @@ export default function AdminPage() {
           </div>
         </div>
 
+        {/* Deposit info notice */}
+        <div className="mb-5 flex items-start gap-3 rounded-2xl border border-[#e3e8f0] bg-white px-6 py-4">
+          <ShieldCheck size={18} className="mt-0.5 shrink-0 text-[#1b5cff]" />
+          <div>
+            <p className="text-sm font-semibold text-[#172033]">Fund a user account</p>
+            <p className="text-xs text-[#73809a]">
+              Find a user in the table below and click <strong>Fund</strong> to add USD to their balance.
+              Only admin accounts can deposit — regular users can only transfer.
+            </p>
+          </div>
+        </div>
+
         {/* User table */}
         <div className="rounded-2xl border border-[#e3e8f0] bg-white">
-          {/* Header row */}
+          {/* Table header */}
           <div className="flex items-center justify-between border-b border-[#e3e8f0] px-6 py-4">
             <h2 className="font-bold">All accounts</h2>
             <div className="flex items-center gap-3">
@@ -198,8 +208,8 @@ export default function AdminPage() {
                 <input
                   value={search}
                   onChange={e => setSearch(e.target.value)}
-                  placeholder="Search name, email, account ID…"
-                  className="rounded-lg border border-[#dfe5ee] py-2 pl-9 pr-4 text-sm outline-none focus:border-[#1b5cff] w-64"
+                  placeholder="Name, email or account ID…"
+                  className="w-64 rounded-lg border border-[#dfe5ee] py-2 pl-9 pr-4 text-sm outline-none focus:border-[#1b5cff]"
                 />
               </div>
               <button
@@ -212,16 +222,7 @@ export default function AdminPage() {
             </div>
           </div>
 
-          {/* Fund a user account info */}
-          <div className="mb-5 rounded-2xl border border-[#e3e8f0] bg-white p-6">
-            <h2 className="mb-1 font-bold">Fund a user account</h2>
-            <p className="mb-4 text-sm text-[#73809a]">Search for a user below and click <strong>Fund</strong> to add USD to their balance.</p>
-            <div className="flex items-center gap-3 rounded-xl bg-[#f5f8ff] px-4 py-3 text-sm text-[#3d5a9e]">
-              <ShieldCheck size={16} />
-              Only admin accounts can deposit funds. Regular users can only transfer.
-            </div>
-          </div>
-
+          {/* Table body */}
           {loading ? (
             <div className="py-16 text-center text-sm text-[#73809a]">Loading accounts…</div>
           ) : filteredUsers.length === 0 ? (
@@ -233,7 +234,7 @@ export default function AdminPage() {
                   <tr className="border-b border-[#f0f4f8] text-left text-xs font-semibold uppercase tracking-widest text-[#9ca3af]">
                     <th className="px-6 py-3">User</th>
                     <th className="px-4 py-3">Account ID</th>
-                    <th className="px-4 py-3 text-right">USD Balance</th>
+                    <th className="px-4 py-3 text-right">USD</th>
                     <th className="px-4 py-3 text-right">USDC</th>
                     <th className="px-4 py-3 text-right">Savings</th>
                     <th className="px-4 py-3">Joined</th>
@@ -245,8 +246,7 @@ export default function AdminPage() {
                     <tr key={u.id} className="hover:bg-[#f8fafc]">
                       <td className="px-6 py-3.5">
                         <div className="flex items-center gap-3">
-                          <div className={`grid size-9 shrink-0 place-items-center rounded-full text-xs font-bold
-                            ${u.is_admin ? 'bg-amber-100 text-amber-700' : 'bg-[#dfe8ff] text-[#1b5cff]'}`}>
+                          <div className={`grid size-9 shrink-0 place-items-center rounded-full text-xs font-bold ${u.is_admin ? 'bg-amber-100 text-amber-700' : 'bg-[#dfe8ff] text-[#1b5cff]'}`}>
                             {u.name.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase()}
                           </div>
                           <div className="min-w-0">
@@ -256,7 +256,7 @@ export default function AdminPage() {
                                 <span className="ml-2 rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-semibold text-amber-700">ADMIN</span>
                               )}
                             </p>
-                            <p className="text-xs text-[#9ca3af] truncate">{u.email}</p>
+                            <p className="truncate text-xs text-[#9ca3af]">{u.email}</p>
                           </div>
                         </div>
                       </td>
@@ -267,7 +267,7 @@ export default function AdminPage() {
                         {showBalances ? `$${Number(u.usd_balance || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}` : '••••'}
                       </td>
                       <td className="px-4 py-3.5 text-right font-medium text-[#73809a]">
-                        {showBalances ? `${Number(u.usdc_balance || 0).toLocaleString()}` : '••••'}
+                        {showBalances ? Number(u.usdc_balance || 0).toLocaleString() : '••••'}
                       </td>
                       <td className="px-4 py-3.5 text-right font-medium text-[#73809a]">
                         {showBalances ? `$${Number(u.savings_balance || 0).toFixed(2)}` : '••••'}
@@ -298,7 +298,7 @@ export default function AdminPage() {
         </p>
       </div>
 
-      {/* ── Fund modal ────────────────────────────────────────────────── */}
+      {/* Fund modal */}
       {fundUser && (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
           <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setFundUser(null)} />
