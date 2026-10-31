@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import Image from 'next/image'
+import Logo from '@/components/Logo'
 import {
   ArrowLeft, Bell, ChevronRight, CreditCard, Eye, EyeOff,
   Globe, KeyRound, LogOut, Moon, Settings, ShieldCheck,
@@ -156,7 +156,7 @@ export default function SettingsPage() {
       {/* ── Header ─────────────────────────────────────────────────── */}
       <header className="flex h-16 items-center justify-between border-b border-[#e7ebf2] bg-white px-6 sm:px-8">
         <div className="flex items-center gap-3">
-          <Image src="/logo.png" alt="Federal Union Banking" width={140} height={40} className="h-10 w-auto object-contain" />
+          <Logo className="h-10 w-auto" />
         </div>
         <Link
           href="/dashboard"
