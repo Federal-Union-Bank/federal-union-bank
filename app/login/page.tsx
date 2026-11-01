@@ -16,8 +16,9 @@ function BrandLeft() {
     <div className="relative hidden w-[46%] flex-col justify-between overflow-hidden bg-[#1b5cff] p-12 lg:flex">
       <div className="pointer-events-none absolute inset-0 opacity-[0.06]"
         style={{ backgroundImage: 'linear-gradient(#fff 1px,transparent 1px),linear-gradient(90deg,#fff 1px,transparent 1px)', backgroundSize: '40px 40px' }} />
-      <div className="relative flex items-center gap-3">
-        <Image src="/logo.png" alt="Federal Union Banking" width={220} height={70} className="h-16 w-auto object-contain brightness-0 invert" />
+      {/* Top: wordmark */}
+      <div className="relative flex items-center">
+        <Image src="/logo.png" alt="Federal Union Banking" width={280} height={90} className="w-64 object-contain" />
       </div>
       <div className="relative">
         <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-xs font-semibold text-blue-100">
@@ -41,8 +42,8 @@ function BrandLeft() {
 
 function MobileLogo() {
   return (
-    <div className="mb-8 flex items-center gap-3 lg:hidden">
-      <Image src="/logo.png" alt="Federal Union Banking" width={220} height={70} className="h-16 w-auto object-contain" />
+    <div className="mb-8 flex items-center lg:hidden">
+      <Image src="/logo.png" alt="Federal Union Banking" width={280} height={90} className="w-56 object-contain" />
     </div>
   )
 }

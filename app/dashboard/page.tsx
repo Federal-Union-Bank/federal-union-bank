@@ -172,9 +172,9 @@ export default function DashboardPage() {
       <PinModal open={pinOpen} title={pinTitle} onClose={() => setPinOpen(false)} onSuccess={() => pinAction?.()} />
 
       {/* ── Header ─────────────────────────────────────────────────── */}
-      <header className="flex h-16 items-center justify-between border-b border-[#e7ebf2] bg-white px-6 sm:px-8">
+      <header className="flex h-20 items-center justify-between border-b border-[#e7ebf2] bg-white px-6 sm:px-8">
         <div className="flex items-center gap-3">
-          <Image src="/logo.png" alt="Federal Union Banking" width={200} height={56} className="h-14 w-auto object-contain" />
+          <Image src="/logo.png" alt="Federal Union Banking" width={220} height={70} className="w-48 object-contain" />
         </div>
         <div className="flex items-center gap-1">
           {/* Trade USDC button — top right */}
